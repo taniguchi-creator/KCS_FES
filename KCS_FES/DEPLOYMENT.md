@@ -41,7 +41,28 @@ NetlifyやVercelなどの「静的ホスティング」サービスは、HTML/CS
 1. [Supabase公式](https://supabase.com) にアクセスして無料アカウントを作成。
 2. 「New Project」をクリックし、プロジェクト名（例: `kcs-festival-db`）を設定。
 3. 作成完了後、Settings -> API から **Project URL** と **anon public API Key** をコピーします。
-4. 本アプリの `src/services/storage.js` または環境変数 `.env` に設定することで、スマホからの全データ（備品リスト・申請データ・在庫数）がクラウドDBに自動同期・保存されます。
+4. コピーした接続情報を、以下のいずれかの方法でアプリに設定します。
+
+#### 【設定方法 1】環境変数 `.env` を使用する場合（推奨）
+プロジェクト直下に `.env` ファイルを作成（または `.env.example` をコピーしてリネーム）し、以下のように入力します：
+
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+> **※ Vercel / Netlify にデプロイする場合:**  
+> Vercelの「Settings」→「Environment Variables」にて、同じ変数名（`VITE_SUPABASE_URL` と `VITE_SUPABASE_ANON_KEY`）を追加してください。
+
+#### 【設定方法 2】`src/services/storage.js` に直接入力する場合
+[`src/services/storage.js`](file:///c:/Users/tani/Desktop/KCS_FES/src/services/storage.js#L14-L17) の 14〜17 行目にある `SUPABASE_CONFIG` オブジェクトに直接ペーストします：
+
+```javascript
+export const SUPABASE_CONFIG = {
+  url: 'https://your-project-id.supabase.co',      // ← コピーした Project URL を貼り付け
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX...', // ← コピーした anon key を貼り付け
+};
+```
 
 ### ステップ C: Vercel または Netlify にデプロイする（3分）
 1. [Vercel](https://vercel.com) または [Netlify](https://netlify.com) にログイン。
